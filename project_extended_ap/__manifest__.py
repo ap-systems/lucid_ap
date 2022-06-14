@@ -5,7 +5,7 @@
     "website": "http://www.ap-systems.co.za",
     "category": "AP Customisation",
     "description": """
-        1.0 Override last update date
+        2.0 Override last update date
         """,
     "summary": "Project",
     "depends": ['project'],

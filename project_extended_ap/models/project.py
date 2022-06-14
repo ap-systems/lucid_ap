@@ -30,6 +30,19 @@ class ProjectReportWizard(models.TransientModel):
 class Project(models.Model):
     _inherit = "project.project"
     
+    
+    def get_last_update_or_default(self):
+        self.ensure_one()
+        if self.last_update_status == 'to_define':
+                last_update_status = 'on_track'
+        else:
+            last_update_status = self.last_update_status
+        labels = dict(self._fields['last_update_status']._description_selection(self.env))
+        return {
+            'status': labels[last_update_status],
+            'color': self.last_update_color,
+        }
+        
     @api.depends('last_update_status')
     def _compute_last_update_color(self):
         for project in self:
