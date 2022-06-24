@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+
+		<record id="project_form_view_ap" model="ir.ui.view">
+			<field name="name">project.form.ap</field>
+			<field name="model">project.project</field>
+			<field name="inherit_id" ref="project.edit_project" />
+			<field name="arch" type="xml">
+				<xpath expr="/form/sheet/group" position="inside">
+				<group string="Budgets">
+							<field name="prj_revenue"/>
+							<field name="prj_disbursement"/>
+							<field name="prj_labour"/>
+							<!--<field name="prj_gross_profit"/>-->
+					        <label for="prj_gross_profit"/>
+					        <div name="prof">
+					          <field name="prj_gross_profit" readonly="1" nolabel="1"/>
+					          <field name="percent" nolabel="1" readonly="1"/>
+					        </div>
+						</group>
+						<group string="Actual to Date">
+						<field name="actual_disbursement_cost"/>
+		        		<field name="actual_labour_cost"/>
+						</group>
+						<group string="Progress">
+						<field name="prj_revenue_progress" widget="progressbar" string="Revenue"/>
+		        		<field name="prj_cost" widget="progressbar"/>
+						</group>
+						
+				</xpath>	
+				
+				<xpath expr="//notebook[last()]" position="inside">
+                    <page string="Invoices">
+                        <field name="ap_invoice_ids"
+                               context="{'form_view_ref': 'account.view_move_form', 'default_project_id': active_id}">
+                            <tree decoration-info="state == 'draft'"
+                                  decoration-muted="state == 'cancel'" string="Invoice">
+                                <field name="partner_id"  string="Customer / Vendor"/>
+                                <field name="invoice_date"/>
+                                <field name="name"/>
+                                <field name="commercial_partner_id" invisible="1"/>
+                                <field name="ref" invisible="0"/>
+                                <field name="name" invisible="1"/>
+                                <field name="journal_id" invisible="1"/>
+                                <field name="company_id" groups="base.group_multi_company"
+                                       options="{'no_create': True}" invisible="1"/>
+                               <!-- <field name = "reference"/>-->
+                                <field name="user_id"/>
+                                <field name="invoice_date_due"/>
+                                <field name="invoice_origin"/>
+                                <field name="amount_untaxed_signed" string="Total" sum="Total"/>
+                                <field name="amount_residual_signed" string="Amount Due" sum="Amount Due"/>
+                                <field name="currency_id" invisible="1"/>
+                                <field name="company_currency_id" invisible="1"/>
+                                <field name="state"/>
+                                <field name="move_type" invisible="context.get('move_type',True)"/>
+                            </tree>
+                        </field>
+                    </page>
+				</xpath>
+			</field>
+		</record>
+		
+		<record id="project_task_form_view_ap" model="ir.ui.view">
+			<field name="name">project.Task.form.ap</field>
+			<field name="model">project.task</field>
+			<field name="inherit_id" ref="project.view_task_form2" />
+			<field name="arch" type="xml">
+			<xpath expr="/form/sheet/group" position="inside">
+				<group string="Budgets">
+							<field name="task_revenue"/>
+							<field name="task_disbursement"/>
+							<field name="task_labour"/>
+							<label for="task_gross_profit"/>
+					        <div name="prof">
+					          <field name="task_gross_profit" readonly="1" nolabel="1"/>
+					          <field name="percent" nolabel="1" readonly="1"/>
+					        </div>
+				</group>
+			</xpath>
+
+			</field>
+		</record>
+		
+		
+		<record id="account_move_form_view_ap" model="ir.ui.view">
+			<field name="name">account.move.form.ap</field>
+			<field name="model">account.move</field>
+			<field name="inherit_id" ref="account.view_move_form" />
+			<field name="arch" type="xml">
+			 <field name="partner_id" position="after">
+				<field name="project_id"/>
+			</field>
+			</field>
+		</record>
+		
+		
+		
+		
+		
+	</data>
+</odoo>

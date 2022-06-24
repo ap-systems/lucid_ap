@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="account_analytic_form_view_ap" model="ir.ui.view">
+            <field name="name">account.analytic.ap</field>
+            <field name="model">account.analytic.line</field>
+            <field name="inherit_id" ref="timesheet_grid.timesheet_view_form" />
+            <field name="arch" type="xml">
+                <field name="project_id" position="before">
+                    <field name="type"/>
+                </field>
+                <field name="type" position="after">
+                    <field name="proposal" attrs="{'invisible':[('type','!=','proposal')]}"/>
+                </field>
+                <field name="project_id" position="attributes">
+                    <attribute name="attrs">{'invisible':[('type','!=','project')]}</attribute>
+                </field>
+                <field name="task_id" position="attributes">
+                    <attribute name="attrs">{'invisible':[('type','!=','project')]}</attribute>
+                </field>
+                <field name="project_id" position="after">
+                    <field name="project_manager" attrs="{'invisible':[('type','!=','project')]}"/>
+                </field>
+                <field name="task_id" position="after">
+                    <field name="employee_id"/>
+                </field>
+            </field>
+        </record>
+        <!-- <record id="account_analytic_form_view_ap_hr" model="ir.ui.view">
+            <field name="name">account.analytic.ap.hr</field>
+            <field name="model">account.analytic.line</field>
+            <field name="inherit_id" ref="sale_timesheet.hr_timesheet_line_form_inherit" />
+            <field name="arch" type="xml">
+                <field name="so_line" position="after">
+                    <field name="employee_id"/>
+                </field>
+            </field>
+        </record>
+ -->
+               
+    </data>
+</odoo>

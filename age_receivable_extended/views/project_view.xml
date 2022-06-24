@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="project_project_view_form_receivable_report" model="ir.ui.view">
+        <field name="name">project.project.receivable</field>
+        <field name="model">project.project</field>
+        <field name="inherit_id" ref="project.edit_project"/>
+        <field name="arch" type="xml">
+	    <xpath expr="//notebook[last()]" position="inside">
+				<page string="Aged Receivable" name="aged_receivable">
+					<field name="project_age_receivable_lines" readonly="1">
+						<tree>
+							<field name="invoice_id" />
+							<field name="date_receivable" />
+							<field name="reason_id" />
+							<field name="annotate_ap" />
+								
+						</tree>
+					</field>
+				</page>
+			</xpath>
+        </field>
+    </record> 
+</odoo>

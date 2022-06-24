@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_cancel_reason_receivable,access.cancel.reason.receivable,model_cancel_reason_receivable,,1,1,1,1
+access_outstanding_reason,acces.outstanding.reason,model_outstanding_reason,base.group_erp_manager,1,1,1,1
+access_project_age_receivable,access.project.age.receivable,model_project_age_receivable,,1,1,1,1
+access_outstanding_reason_all,acces.outstanding.reason.all,model_outstanding_reason,,1,0,0,0

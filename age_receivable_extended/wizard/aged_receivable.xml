@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <record model="ir.ui.view" id="wizard_cancel_reason_receivable">
+            <field name="name">wizard.cancel.reason.receivable</field>
+            <field name="model">cancel.reason.receivable</field>
+            <field name="type">form</field>
+            <field name="priority">0</field>
+            <field name="arch" type="xml">
+            
+                <form string="test" >
+                    <group> 
+					<group>
+                        <field name="receivable_reason_id" required="0" />
+						<field name="annotate_outstanding" />
+                     </group>
+					<group>
+					<field name="date_outstanding" />
+					</group>
+                    </group>
+                    <footer>
+						<button name="save_reason" string="Save" type="object" class="btn-primary"/>
+                        <button class="oe_link" special="cancel" string="Close" />
+                    </footer>
+                </form>
+            </field>
+        </record>
+        
+        
+         
+   <record model="ir.actions.act_window" id="action_cancel_reason_receivable">
+            <field name="name">Test</field>
+            <field name="res_model">cancel.reason.receivable</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="wizard_cancel_reason_receivable"/>
+            <field name="target">new</field>
+        </record>
+
+            
+            
+            
+    </data>
+</odoo>

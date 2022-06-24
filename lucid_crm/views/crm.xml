@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+
+		<record id="crm_form_view_ap" model="ir.ui.view">
+			<field name="name">crm.form.ap</field>
+			<field name="model">crm.lead</field>
+			<field name="inherit_id" ref="crm.crm_lead_view_form" />
+			<field name="arch" type="xml">
+                
+            <button name='%(crm.crm_lead_lost_action)d' position="after">
+						<button type="object" name="change_state"  string="Next" class='oe_highlight' />
+				</button>
+				<field name="company_id" position="after">
+					<field name="proposal_team" widget="many2many_tags"/>
+				</field>
+				<page name="lead" position="after">
+					<page name="proposal_list" string="Proposal List">
+						<field name="proposal_list_id">
+							<tree editable="bottom">
+								<field name="crm_a"/>
+								<field name="crm_b"/>
+								<field name="crm_c"/>
+								<field name="crm_d"/>
+								<field name="crm_e"/>
+								<field name="crm_f"/>
+								<field name="crm_g"/>
+								<field name="crm_h"/>
+								<field name="crm_i"/>
+								<field name="crm_j"/>
+							</tree>
+						</field>
+					</page>
+					<page name="feasibility_list" string="Feasibility Sheet"></page>
+				</page>
+			</field>
+
+		</record>		
+	</data>
+</odoo>
