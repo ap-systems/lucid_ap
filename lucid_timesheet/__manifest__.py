@@ -20,7 +20,7 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base','analytic','timesheet_grid','lucid_crm','sale_timesheet','hr_expense'],
+    'depends': ['base','analytic','timesheet_grid','lucid_crm','sale_timesheet','hr_expense','hr'],
 
     # always loaded
     'data': [

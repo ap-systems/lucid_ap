@@ -75,6 +75,12 @@ class ProjectTask(models.Model):
             self.task_gross_profit = ((self.task_revenue - self.task_disbursement - self.task_labour) / self.task_revenue) * 100
 
 
+    # @api.depends('dis_forecast_ids','dis_forecast_ids.disbursement')
+    def compute_pm_disbursement(self):
+        pass
+        # for rec in self:
+        #     rec.pm_disbursement = rec.pm_disbursement_old + sum(rec.dis_forecast_ids.mapped('disbursement'))
+
 
 class account_move(models.Model):
     _inherit = 'account.move'   

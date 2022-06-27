@@ -7,6 +7,9 @@
 			<field name="model">project.project</field>
 			<field name="inherit_id" ref="project.edit_project" />
 			<field name="arch" type="xml">
+				<field name="company_id" position="after">
+					<field name="proposal_team" widget="many2many_tags"/>
+				</field>
 				<page name="settings" position="after">
 					<page name="proposal_list" string="Proposal List">
 						<field name="proposal_list_id">

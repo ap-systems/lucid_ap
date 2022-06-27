@@ -22,6 +22,7 @@ class CrmLead(models.Model):
                                                'user_id':rec.user_id.id,
                                                'company_id':rec.company_id.id,
                                                'validity_date':rec.date_deadline,
+                                               'proposal_team':[(6,0,rec.proposal_team.ids)],
                                                'proposal_list_id':[(0,0,{'crm_a':order.crm_a,
                                                                             'crm_b':order.crm_b,
                                                                             'crm_c':order.crm_c,
@@ -37,7 +38,7 @@ class CrmLead(models.Model):
 class ProposalList(models.Model):
 
     _name = 'proposal.list'
-    _rec_name = 'proposal_list_ids'
+    _description = 'Proposal List'
 
     crm_a = fields.Char(string="A")
     crm_b = fields.Char(string="B")
@@ -59,6 +60,7 @@ class SaleOrder(models.Model):
 
     proposal_list_id = fields.One2many('proposal.list','proposal_sale_list_ids') 
     project_name = fields.Char(string="Project Name",required=True)
+    proposal_team = fields.Many2many('hr.employee',string="Proposal Team")
 
     def action_confirm(self):
         res = super(SaleOrder,self).action_confirm()
@@ -68,6 +70,7 @@ class SaleOrder(models.Model):
                                                     'partner_id':rec.partner_id.id,
                                                     'user_id':rec.user_id.id,
                                                     'company_id':rec.company_id.id,
+                                                    'proposal_team':[(6,0,rec.proposal_team.ids)],
                                                     'proposal_list_id':[(0,0,{'crm_a':order.crm_a,
                                                                             'crm_b':order.crm_b,
                                                                             'crm_c':order.crm_c,
@@ -85,3 +88,4 @@ class ProjectProject(models.Model):
     _inherit = 'project.project'
 
     proposal_list_id = fields.One2many('proposal.list','proposal_project_list_ids')
+    proposal_team = fields.Many2many('hr.employee',string="Proposal Team")
