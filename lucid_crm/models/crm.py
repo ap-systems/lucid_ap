@@ -11,9 +11,9 @@ class CrmLead(models.Model):
 
     def change_state(self):
         vals=[]
-        stage_ids = self.env['crm.stage'].search(['|', ('team_id', '=', self.team_id.id),('team_id', '=', False),('sequence','>',self.stage_id.sequence)])
+        stage_ids = self.env['crm.stage'].search([('sequence','>',self.stage_id.sequence)], limit = 1)
         if stage_ids:
-            self.stage_id = stage_ids[0]
+            self.stage_id = stage_ids
 
         if self.stage_id.sequence == 4:
             for rec in self:
@@ -61,6 +61,7 @@ class SaleOrder(models.Model):
     proposal_list_id = fields.One2many('proposal.list','proposal_sale_list_ids') 
     project_name = fields.Char(string="Project Name",required=True)
     proposal_team = fields.Many2many('hr.employee',string="Proposal Team")
+    
 
     def action_confirm(self):
         res = super(SaleOrder,self).action_confirm()
@@ -81,6 +82,7 @@ class SaleOrder(models.Model):
                                                                             'crm_h':order.crm_h,
                                                                             'crm_i':order.crm_i,
                                                                             'crm_j':order.crm_j})for order in rec.proposal_list_id]})
+                
         return res
 
 class ProjectProject(models.Model):
