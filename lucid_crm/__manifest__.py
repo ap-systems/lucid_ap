@@ -1,7 +1,7 @@
 {
     'name': "Lucid Crm", 
         'summary': "",
-       'version': "1.2",
+       'version': "1.3",
        'depends': ['base', 'crm' ,'sale','sale_management','project'],
        'author': "AP Accounting Services",
        'license': '',
