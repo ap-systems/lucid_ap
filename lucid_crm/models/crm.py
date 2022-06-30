@@ -8,7 +8,7 @@ class CrmLead(models.Model):
 
     proposal_team = fields.Many2many('hr.employee',string="Proposal Team",required=True)
     proposal_list_id = fields.One2many('proposal.list','proposal_list_ids')
-    project_name = fields.Char(string="Project Name",required=True)
+    project_name = fields.Char(string="Project Name",required=False)
     project_id = fields.Many2one('project.project')
     is_check = fields.Boolean(string="Is Check",compute='_compute_is_check')
     budget_crm_id = fields.One2many('budget.crm','budget_crm_ids')
