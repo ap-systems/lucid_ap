@@ -12,6 +12,8 @@
 						<button type="object" name="change_state"  string="Next" class='oe_highlight' />
 				</button>
 				<field name="company_id" position="after">
+					<field name="is_check"/>
+					<field name="project_name"/>
 					<field name="proposal_team" widget="many2many_tags"/>
 				</field>
 				<page name="lead" position="after">
@@ -32,6 +34,25 @@
 						</field>
 					</page>
 					<page name="feasibility_list" string="Feasibility Sheet"></page>
+					<page name="budget" string="Budget" attrs="{'invisible':[('is_check','=',False)]}">
+						<field name="budget_crm_id">
+							<tree editable="bottom">
+								<field name="product_id"/>
+								<field name="name" widget="section_and note_text"/>
+								<field name="employee_id"/>
+								<field name="product_uom_qty"/>
+								<field name="qty_delivered"/>
+								<field name="qty_invoiced"/>
+								<field name="product_uom"/>
+								<field name="currency_id" invisible="1"/>
+								<field name="price_unit"/>
+								<field name="tax_ids" widget="many2many_tags"/>
+								<field name="discount" widget="decimal"/>
+								<field name="price_subtotal"  class="oe_inline" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+								<field name="cost"  class="oe_inline" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+							</tree>
+						</field>
+					</page>
 				</page>
 			</field>
 

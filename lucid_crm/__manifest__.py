@@ -1,4 +1,5 @@
-{'name': "Lucid Crm", 
+{
+    'name': "Lucid Crm", 
         'summary': "",
        'version': "1.1",
        'depends': ['base', 'crm' ,'sale','sale_management','project'],
@@ -12,7 +13,7 @@
        'data': [
                 'security/ir.model.access.csv',
                 'views/crm.xml',
-                'views/sale.xml',
+                # 'views/sale.xml',
                 'views/project.xml'
         ],
        'qweb': [ 
