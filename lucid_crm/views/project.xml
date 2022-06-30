@@ -11,6 +11,51 @@
 					<field name="proposal_team" widget="many2many_tags"/>
 				</field>
 				<page name="settings" position="after">
+					<page name="internal_notes" string="Internal Notes">
+						<field name="description" placeholder="Add a description..."/>
+					</page>
+					<page name="project_lead" string="Extra Information">
+                                <group>
+                                    <group string="Contact Information">
+                                        <field name="partner_name"/>
+                                        <label for="street_page_lead" string="Address"/>
+                                        <div class="o_address_format">
+                                            <field name="street" id="street_page_lead" placeholder="Street..." class="o_address_street"/>
+                                            <field name="street2" placeholder="Street 2..." class="o_address_street"/>
+                                            <field name="city" placeholder="City" class="o_address_city"/>
+                                            <field name="state_id" class="o_address_state" placeholder="State" options='{"no_open": True}'/>
+                                            <field name="zip" placeholder="ZIP" class="o_address_zip"/>
+                                            <field name="country_id" placeholder="Country" class="o_address_country" options='{"no_open": True, "no_create": True}'/>
+                                        </div>
+                                        <field name="website" widget="url" placeholder="e.g. https://www.odoo.com"/>
+                                        <field name="lang_id" options="{'no_create': True}"/>
+                                    </group>
+                                    <group class="mt48">
+                                        <label for="contact_name_page_lead"/>
+                                        <div class="o_row">
+                                            <field name="contact_name" id="contact_name_page_lead"/>
+                                            <field name="title" placeholder="Title" domain="[]" options='{"no_open": True}'/>
+                                        </div>
+                                        <field name="function"/>
+                                        <label for="mobile_page_lead" class="oe_inline"/>
+                                        <div class="o_row o_row_readonly">
+                                            
+                                            <field name="mobile" id="mobile_page_lead" widget="phone"/>
+                                        </div>
+                                    </group>
+                                    <group string="Marketing">
+                                        <field name="campaign_id" />
+                                        <field name="medium_id" />
+                                        <field name="source_id" />
+                                    </group>
+                                    <group string="Misc" name="Misc">
+                                        <field name="day_open" groups="base.group_no_one"/>
+                                        <field name="day_close" groups="base.group_no_one"/>
+                                        <field name="referred"/>
+            
+                                    </group>
+                                </group>
+                            </page>
 					<page name="proposal_list" string="Proposal List">
 						<field name="proposal_list_id">
 							<tree editable="bottom">
@@ -27,6 +72,26 @@
 							</tree>
 						</field>
 					</page>
+					<page name="budget" string="Budget">
+						<field name="project_budget_id">
+							<tree editable="bottom">
+								<field name="product_id"/>
+								<field name="name" widget="section_and note_text"/>
+								<field name="employee_id"/>
+								<field name="product_uom_qty"/>
+								<field name="qty_delivered"/>
+								<field name="qty_invoiced"/>
+								<field name="product_uom"/>
+								<field name="currency_id" invisible="1"/>
+								<field name="price_unit"/>
+								<field name="tax_ids" widget="many2many_tags"/>
+								<field name="discount" widget="decimal"/>
+								<field name="price_subtotal"  class="oe_inline" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+								<field name="cost"  class="oe_inline" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+							</tree>
+						</field>
+					</page>
+					<page name="feasibility_list" string="Feasibility Sheet"></page>
 				</page>
 			</field>
 

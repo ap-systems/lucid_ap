@@ -7,16 +7,34 @@ class ProjectProject(models.Model):
      
     
     prj_revenue = fields.Float(string='Revenue', compute='_compute_budget_prj',store=False, track_visibility='onchange')
-    prj_disbursement = fields.Float(string='Disbursements Cost', compute='_compute_budget_prj',store=False, track_visibility='onchange')
+    prj_disbursement = fields.Float(string='Cost', compute='_compute_budget_prj',store=False, track_visibility='onchange')
     prj_labour = fields.Float(string='Labour Cost', compute='_compute_budget_prj',store=False, track_visibility='onchange')
     prj_gross_profit = fields.Float(string='Gross Margin',store=False, compute='_compute_pm_grosss_margin_prjct',track_visibility='onchange')
     ap_invoice_ids = fields.One2many('account.move', 'project_id', string='Invoice', track_visibility='onchange')
     percent = fields.Char(default="%")
     prj_revenue_progress = fields.Integer(string='Revenue',compute='_compute_revenue_progress')
     prj_cost = fields.Integer(string='Cost',compute='_compute_prj_cost')
-    actual_disbursement_cost = fields.Float(string='A.Disbursements Cost')
+    actual_disbursement_cost = fields.Float(string='Cost',compute="_compute_actual_disbursement_cost")
     actual_labour_cost = fields.Float(string='A.Labour Cost')
-     
+    actual_revenue_cost = fields.Float(string="Revenue",compute="_compute_actual_revenue_cost")
+
+    def _compute_actual_disbursement_cost(self):
+        for rec in self:
+            tot_dis_cost = 0.0
+            for line in self.env['account.analytic.line'].search([('project_id','=',rec.id)]):
+                tot_dis_cost += line.employee_id.timesheet_cost * line.unit_amount
+            rec.actual_disbursement_cost = tot_dis_cost
+
+
+    def _compute_actual_revenue_cost(self):
+        for rec in self:
+            tot_revenue_cost = 0.0
+            for line in self.env['account.move'].search([('state','in',['posted']),('project_id','=',rec.id),('move_type', '=', 'out_invoice')]):
+                print("line.amount_untaxed_singned",line.amount_untaxed_signed)
+                tot_revenue_cost += line.amount_untaxed_signed
+            rec.actual_revenue_cost = tot_revenue_cost
+
+
 
     @api.depends('task_ids.task_revenue', 'task_ids.task_disbursement', 'task_ids.task_labour','task_ids','task_ids.active')
     def _compute_budget_prj(self):
@@ -56,7 +74,7 @@ class ProjectTask(models.Model):
     _inherit = 'project.task'
 
     task_revenue = fields.Float(string='Revenue',track_visibility='onchange')
-    task_disbursement = fields.Float(string='Disbursements Cost',track_visibility='onchange')
+    task_disbursement = fields.Float(string='Cost',track_visibility='onchange')
     task_labour = fields.Float(string='Labour Cost',track_visibility='onchange')
     task_gross_profit = fields.Float(string='Gross Margin',compute='_compute_gross_profit_task',store=False)
     percent = fields.Char(default="%")

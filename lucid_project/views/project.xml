@@ -11,7 +11,7 @@
 				<group string="Budgets">
 							<field name="prj_revenue"/>
 							<field name="prj_disbursement"/>
-							<field name="prj_labour"/>
+							<field name="prj_labour" invisible="1"/>
 							<!--<field name="prj_gross_profit"/>-->
 					        <label for="prj_gross_profit"/>
 					        <div name="prof">
@@ -21,7 +21,8 @@
 						</group>
 						<group string="Actual to Date">
 						<field name="actual_disbursement_cost"/>
-		        		<field name="actual_labour_cost"/>
+						<field name="actual_revenue_cost"/>
+		        		<field name="actual_labour_cost" invisible="1"/>
 						</group>
 						<group string="Progress">
 						<field name="prj_revenue_progress" widget="progressbar" string="Revenue"/>
@@ -71,7 +72,7 @@
 				<group string="Budgets">
 							<field name="task_revenue"/>
 							<field name="task_disbursement"/>
-							<field name="task_labour"/>
+							<field name="task_labour" invisible="1"/>
 							<label for="task_gross_profit"/>
 					        <div name="prof">
 					          <field name="task_gross_profit" readonly="1" nolabel="1"/>

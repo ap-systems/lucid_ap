@@ -7,12 +7,15 @@
 			<field name="model">crm.lead</field>
 			<field name="inherit_id" ref="crm.crm_lead_view_form" />
 			<field name="arch" type="xml">
-                
             <button name='%(crm.crm_lead_lost_action)d' position="after">
-						<button type="object" name="change_state"  string="Next" class='oe_highlight' />
+            			<field name="sequence_stage" invisible="1"/>
+						<button type="object" name="change_state"  string="Next" attrs="{'invisible':[('sequence_stage','not in',[0,1,2])]}"/>
+						<button type="object" name="change_nobid" string="No Bid" attrs="{'invisible':[('sequence_stage','in',[0,1,2,6])]}"/>
+						<button type="object" name="change_follwup" string="Follow Up" attrs="{'invisible':[('sequence_stage','in',[0,1,2,7])]}"/>
+						<button type="object" name="change_graveyard" string="Graveyard" attrs="{'invisible':[('sequence_stage','in',[0,1,2,8])]}"/>
 				</button>
 				<field name="company_id" position="after">
-					<field name="is_check"/>
+					<field name="is_check" invisible="1"/>
 					<field name="project_name"/>
 					<field name="proposal_team" widget="many2many_tags"/>
 				</field>
@@ -55,7 +58,9 @@
 					</page>
 				</page>
 			</field>
-
+			<!-- <field name="stage_id" position="attributes">
+				<attribute name="readonly">1</attribute>
+			</field> -->
 		</record>		
 	</data>
 </odoo>
