@@ -6,7 +6,7 @@ class CrmLead(models.Model):
 
     _inherit = 'crm.lead'
 
-    proposal_team = fields.Many2many('hr.employee',string="Proposal Team",required=True)
+    proposal_team = fields.Many2many('hr.employee',string="Proposal Team",required=False)
     proposal_list_id = fields.One2many('proposal.list','proposal_list_ids')
     project_name = fields.Char(string="Project Name",required=False)
     project_id = fields.Many2one('project.project')
@@ -17,7 +17,6 @@ class CrmLead(models.Model):
     def _compute_is_check(self):
         self.is_check = True
         for rec in self:
-            print("rec.stage_id.sequence",rec.stage_id.sequence)
             if rec.stage_id.sequence in [0,1]:
                 rec.is_check = False
 
