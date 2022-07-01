@@ -10,14 +10,19 @@
 			<field name="stage_id" position="attributes">
 				<attribute name="options">{'fold_field': 'fold'}</attribute>
 			</field>
-			
-                
+			<button name="action_set_won_rainbowman" position="attributes">
+				<attribute name="attrs">{'invisible': ['|','|','|', ('active','=',False), ('probability', '=', 100), ('type', '=', 'lead'),('sequence_stage','in',[7])]}</attribute>
+			</button>
+            <button name="%(crm.crm_lead_lost_action)d" position="attributes">
+				<attribute name="attrs">{'invisible': ['|','|',('sequence_stage','in',[7]), ('type', '=', 'lead'),('active', '=', False),('probability', '&lt;', 100)]}</attribute>
+			</button>
             <button name='%(crm.crm_lead_lost_action)d' position="after">
             			<field name="sequence_stage" invisible="1"/>
 						<button type="object" name="change_state"  string="Next" attrs="{'invisible':[('sequence_stage','not in',[0,1,2])]}"/>
-						<button type="object" name="change_nobid" string="No Bid" attrs="{'invisible':[('sequence_stage','in',[0,1,2,6])]}"/>
-						<button type="object" name="change_follwup" string="Follow Up" attrs="{'invisible':[('sequence_stage','in',[0,1,2,7])]}"/>
-						<button type="object" name="change_graveyard" string="Graveyard" attrs="{'invisible':[('sequence_stage','in',[0,1,2,8])]}"/>
+						<button type="object" name="change_qualified"  string="Qualified" attrs="{'invisible':[('sequence_stage','in',[1])]}"/>
+						<button type="object" name="change_nobid" string="No Bid" attrs="{'invisible':[('sequence_stage','in',[0,6])]}"/>
+						<button type="object" name="change_follwup" string="Follow Up" attrs="{'invisible':[('sequence_stage','in',[0,7])]}"/>
+						<button type="object" name="change_graveyard" string="Graveyard" attrs="{'invisible':[('sequence_stage','in',[0,8,7])]}"/>
 				</button>
 				<field name="company_id" position="after">
 					<!-- <field name="is_check" invisible="1"/> -->
@@ -41,7 +46,52 @@
 							</tree>
 						</field>
 					</page>
-					<page name="feasibility_list" string="Feasibility Sheet"></page>
+					<page name="feasibility_list" string="Feasibility Sheet">
+						<group>
+							<group name="client" string="Client">
+								<field name="company_name"/>
+								<field name="proj_name"/>
+								
+							</group>
+							<group name="budget" string="Budget">
+								<field name="prj_budget_1"/>
+								<field name="prj_budget_2"/>
+								<field name="tot_budget"/> 
+							</group>
+							<group name="project_timeline" string="Project Timeline">
+								<field name="proposal_submission_date"/>
+							</group>
+							<group name="project_description" string="Project Description">
+								<field name="summary"/>
+								<field name="actor_db"/>
+								<field name="website_1_rf"/>
+								<field name="website_2_rf"/>
+								<field name="further_req"/>
+								<field name="proj_outcome"/>
+							</group>
+							<group name="bidding_requirements" string="Bidding Requirements">
+								<field name="eligibility_critarea"/>
+								<field name="doc_to_submit"/>
+								<field name="selection_critarea"/>
+							</group>
+							<group name="project_management" string="Project Managment">
+								<field name="resource_req"/>
+								<field name="timing"/>
+							</group>
+							<group name="research_seo" string="Research And SEO">
+								<field name="seo"/>
+							</group>
+							<group name="design_team" string="DESIGN TEAM">
+								<field name="scope_of_work"/>
+							</group>
+							<group name="dev_team" string="DEV TEAM">
+								<field name="database"/>
+								<field name="web_1_rf_gh"/>
+								<field name="web_2_rf_bh"/>
+							</group>
+
+						</group>
+					</page>
 					<page name="budget" string="Budget" attrs="{'invisible':[('sequence_stage','in',[0,1])]}">
 						<field name="budget_crm_id">
 							<tree editable="bottom">
@@ -63,9 +113,24 @@
 					</page>
 				</page>
 			</field>
+
 			<!-- <field name="stage_id" position="attributes">
 				<attribute name="readonly">1</attribute>
 			</field> -->
+		</record>
+
+		<record id="crm_form_view_ap_inherit" model="ir.ui.view">
+			<field name="name">crm.form.ap</field>
+			<field name="model">crm.lead</field>
+			<field name="inherit_id" ref="sale_crm.crm_case_form_view_oppor" />
+			<field name="arch" type="xml">
+				<button name="action_sale_quotations_new" position="attributes">
+					<attribute name="invisible">1</attribute>
+				</button>
+				<button name="action_view_sale_quotation" position="attributes">
+					<attribute name="invisible">1</attribute>
+				</button>
+			</field>
 		</record>		
 	</data>
 </odoo>

@@ -1,8 +1,8 @@
 {
     'name': "Lucid Crm", 
         'summary': "",
-       'version': "1.6",
-       'depends': ['base', 'crm' ,'sale','sale_management','project'],
+       'version': "1.7",
+       'depends': ['base', 'crm' ,'sale','sale_management','project','sale_crm'],
        'author': "AP Accounting Services",
        'license': '',
        'website': "http://www.ap-accounting.co.za",

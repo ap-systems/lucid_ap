@@ -1,6 +1,6 @@
 {'name': "Lucid Project", 
         'summary': "",
-       'version': "1.3",
+       'version': "1.4",
        'depends': ['base', 'project','account' ],
        'author': "AP Accounting Services",
        'license': '',

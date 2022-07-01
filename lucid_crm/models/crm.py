@@ -19,8 +19,29 @@ class CrmLead(models.Model):
     project_id = fields.Many2one('project.project')
     budget_crm_id = fields.One2many('budget.crm','budget_crm_ids')
     sequence_stage = fields.Integer(string='Sequence Stage',compute='_compute_is_check_stage',store=True)
-
-    
+    ####
+    company_name = fields.Char(string="Company Name")
+    proj_name = fields.Char(string="Project Name")
+    prj_budget_1 = fields.Char(string="Project Budget 1 - Actors Database")
+    prj_budget_2 = fields.Char(string="Project Budget 2 - 2 X Websites")
+    tot_budget = fields.Char(string="Total Budget") 
+    proposal_submission_date = fields.Date(string="Proposal Submission date")
+    summary = fields.Char(string="Summary")
+    actor_db = fields.Char(string="Actors Database")
+    website_1_rf = fields.Char(string="Website 1: RF GH - Research Forum Global Health")
+    website_2_rf = fields.Char(string="Website 2: RF BC - Research Forum Berlin Citizens")
+    further_req = fields.Char(string="Further Requirements")
+    proj_outcome = fields.Char(string="Project Outcome")
+    eligibility_critarea = fields.Char(string="Elibitility Criteria")
+    doc_to_submit = fields.Char(string="Documents to submit")
+    selection_critarea = fields.Char(string="Selection Criteria")
+    resource_req = fields.Char(string="Ressource Requirements")
+    timing = fields.Char(string="Timing")
+    seo = fields.Char(string="SEO")
+    scope_of_work = fields.Char(string="Please comment on the design and capacity given the scope of work")
+    database = fields.Char(string="Database")
+    web_1_rf_gh = fields.Char(string="Website 1: RF GH - Research Forum Global Health")
+    web_2_rf_bh = fields.Char(string="Website 2: RF BC - Research Forum Berlin Citizens")
 
     @api.depends('stage_id')
     def _compute_is_check_stage(self):
@@ -43,6 +64,10 @@ class CrmLead(models.Model):
         if self.stage_id.sequence == 4:
             self.action_make_project()
 
+    def change_qualified(self):
+        if self.stage_id:
+            self.stage_id = 2
+
     def change_nobid(self):
         if self.stage_id:
             self.stage_id = 7
@@ -62,12 +87,12 @@ class CrmLead(models.Model):
 
     def action_make_project(self):
         for rec in self:
-            if rec.project_name and rec.proposal_team:
+            if rec.project_name:
                 rec.project_id = self.env['project.project'].create({'name':rec.project_name,
                                                     'partner_id':rec.partner_id.id,
                                                     'user_id':rec.user_id.id,
                                                     'company_id':rec.company_id.id,
-                                                    'proposal_team':[(6,0,rec.proposal_team.ids)],
+                                                    'proposal_team':[(6,0,rec.budget_crm_id.employee_id.ids)],
                                                     'description':rec.description,
                                                     'crm_id':rec.id,
                                                     'partner_name':rec.partner_name,
@@ -166,7 +191,7 @@ class ProjectProject(models.Model):
 
     crm_id = fields.Many2one('crm.lead',string="Crm")
     proposal_list_id = fields.One2many('proposal.list','proposal_project_list_ids')
-    proposal_team = fields.Many2many('hr.employee',string="Proposal Team")
+    proposal_team = fields.Many2many('hr.employee',string="Project Team")
     project_budget_id = fields.One2many('budget.crm','project_budget_ids')
     description = fields.Html()
     partner_name = fields.Char(
@@ -199,7 +224,35 @@ class ProjectProject(models.Model):
     contact_name = fields.Char(
         'Contact Name', tracking=30,
         compute='_compute_contact_name', readonly=False, store=True)
-
+    company_name = fields.Char(string="Company Name")
+    proj_name = fields.Char(string="Project Name")
+    prj_budget_1 = fields.Char(string="Project Budget 1 - Actors Database")
+    prj_budget_2 = fields.Char(string="Project Budget 2 - 2 X Websites")
+    tot_budget = fields.Char(string="Total Budget") 
+    proposal_submission_date = fields.Date(string="Proposal Submission date")
+    summary = fields.Char(string="Summary")
+    actor_db = fields.Char(string="Actors Database")
+    website_1_rf = fields.Char(string="Website 1: RF GH - Research Forum Global Health")
+    website_2_rf = fields.Char(string="Website 2: RF BC - Research Forum Berlin Citizens")
+    further_req = fields.Char(string="Further Requirements")
+    proj_outcome = fields.Char(string="Project Outcome")
+    eligibility_critarea = fields.Char(string="Elibitility Criteria")
+    doc_to_submit = fields.Char(string="Documents to submit")
+    selection_critarea = fields.Char(string="Selection Criteria")
+    resource_req = fields.Char(string="Ressource Requirements")
+    timing = fields.Char(string="Timing")
+    seo = fields.Char(string="SEO")
+    scope_of_work = fields.Char(string="Please comment on the design and capacity given the scope of work")
+    database = fields.Char(string="Database")
+    web_1_rf_gh = fields.Char(string="Website 1: RF GH - Research Forum Global Health")
+    web_2_rf_bh = fields.Char(string="Website 2: RF BC - Research Forum Berlin Citizens")
+    
+    @api.onchange('project_budget_id')
+    def onchange_project_budget_id(self):
+        for rec in self:
+            if rec.project_budget_id.employee_id:
+                rec.proposal_team = [(6,0,rec.project_budget_id.employee_id.ids)]
+    
     def _prepare_partner_name_from_partner(self, partner):
         """ Company name: name of partner parent (if set) or name of partner
         (if company) or company_name of partner (if not a company). """
