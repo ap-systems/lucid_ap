@@ -49,7 +49,7 @@ class ProjectProject(models.Model):
     def _compute_pm_grosss_margin_prjct(self):
         self.prj_gross_profit = 0.0
         if self.prj_revenue and self.prj_disbursement:
-            self.prj_gross_profit = (self.prj_revenue/self.prj_disbursement) * 100
+            self.prj_gross_profit = (self.prj_disbursement/self.prj_revenue) * 100
         else:
             self.prj_gross_profit = 0.0
             
