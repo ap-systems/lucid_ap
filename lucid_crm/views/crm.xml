@@ -7,6 +7,11 @@
 			<field name="model">crm.lead</field>
 			<field name="inherit_id" ref="crm.crm_lead_view_form" />
 			<field name="arch" type="xml">
+			<field name="stage_id" position="attributes">
+				<attribute name="options">{'fold_field': 'fold'}</attribute>
+			</field>
+			
+                
             <button name='%(crm.crm_lead_lost_action)d' position="after">
             			<field name="sequence_stage" invisible="1"/>
 						<button type="object" name="change_state"  string="Next" attrs="{'invisible':[('sequence_stage','not in',[0,1,2])]}"/>
@@ -15,7 +20,7 @@
 						<button type="object" name="change_graveyard" string="Graveyard" attrs="{'invisible':[('sequence_stage','in',[0,1,2,8])]}"/>
 				</button>
 				<field name="company_id" position="after">
-					<field name="is_check" invisible="1"/>
+					<!-- <field name="is_check" invisible="1"/> -->
 					<field name="project_name"/>
 					<field name="proposal_team" widget="many2many_tags"/>
 				</field>
@@ -37,7 +42,7 @@
 						</field>
 					</page>
 					<page name="feasibility_list" string="Feasibility Sheet"></page>
-					<page name="budget" string="Budget" attrs="{'invisible':[('is_check','=',False)]}">
+					<page name="budget" string="Budget" attrs="{'invisible':[('sequence_stage','in',[0,1])]}">
 						<field name="budget_crm_id">
 							<tree editable="bottom">
 								<field name="product_id"/>

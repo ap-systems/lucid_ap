@@ -17,47 +17,15 @@ class CrmLead(models.Model):
     proposal_list_id = fields.One2many('proposal.list','proposal_list_ids')
     project_name = fields.Char(string="Project Name",required=False)
     project_id = fields.Many2one('project.project')
-    is_check = fields.Boolean(string="Is Check",compute='_compute_is_check')
     budget_crm_id = fields.One2many('budget.crm','budget_crm_ids')
-    # is_check_proposal = fields.Boolean('Proposal',compute='_compute_is_check_proposal')
-    # is_check_nobid = fields.Boolean("No Bid",compute="_compute_is_check_nobid")
-    # is_check_followup = fields.Boolean('Follow Up',compute='_compute_is_check_followup')
-    # is_check_graveyard = fields.Boolean("GraveYard",compute='_compute_is_check_graveyard')
     sequence_stage = fields.Integer(string='Sequence Stage',compute='_compute_is_check_stage',store=True)
 
-    @api.depends('is_check')
-    def _compute_is_check(self):
-        print("\n\n\nis check method called")
-        self.is_check = True
-        for rec in self:
-            if rec.stage_id.sequence in [0,1]:
-                rec.is_check = False
+    
 
     @api.depends('stage_id')
     def _compute_is_check_stage(self):
         for rec in self:
             rec.sequence_stage = rec.stage_id.sequence 
-
-    # @api.depends('is_check_proposal')
-    # def _compute_is_check_proposal(self):
-    #     self.is_check_proposal = True
-    #     for rec in self:
-    #         if rec.stage_id.sequence not in [0,1,2]:
-    #             rec.is_check_proposal = False
-
-    # @api.depends('is_check_nobid')
-    # def _compute_is_check_nobid(self):
-    #     self.is_check_nobid = True
-    #     for rec in self:
-    #         if rec.stage_id.sequence == 6:
-    #             rec.is_check_nobid = False
-    
-    # @api.depends('is_check_followup')
-    # def _compute_is_check_followup(self):
-    #     self.is_check_followup = True
-    #     for rec in self:
-    #         if rec.stage_id.sequence == 7:
-    #             rec.is_check_followup = False
 
     @api.depends('is_check_graveyard')
     def _compute_is_check_graveyard(self):

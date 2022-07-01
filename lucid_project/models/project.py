@@ -8,7 +8,7 @@ class ProjectProject(models.Model):
     
     prj_revenue = fields.Float(string='Revenue', compute='_compute_budget_prj',store=False, track_visibility='onchange')
     prj_disbursement = fields.Float(string='Cost', compute='_compute_budget_prj',store=False, track_visibility='onchange')
-    prj_labour = fields.Float(string='Labour Cost', compute='_compute_budget_prj',store=False, track_visibility='onchange')
+    prj_labour = fields.Float(string='Labour Cost')
     prj_gross_profit = fields.Float(string='Gross Margin',store=False, compute='_compute_pm_grosss_margin_prjct',track_visibility='onchange')
     ap_invoice_ids = fields.One2many('account.move', 'project_id', string='Invoice', track_visibility='onchange')
     percent = fields.Char(default="%")
@@ -35,39 +35,38 @@ class ProjectProject(models.Model):
             rec.actual_revenue_cost = tot_revenue_cost
 
 
-
-    @api.depends('task_ids.task_revenue', 'task_ids.task_disbursement', 'task_ids.task_labour','task_ids','task_ids.active')
+    
     def _compute_budget_prj(self):
         for rec in self:
-            tasks = self.env['project.task'].search([('project_id','=',self.id),('parent_id','=',False),'|',('active','!=',True),('active','!=',False)])
-            rec.prj_revenue = sum(tasks.mapped('task_revenue'))
-            rec.prj_disbursement = sum(tasks.mapped('task_disbursement'))
-            rec.prj_labour = sum(tasks.mapped('task_labour'))
+            tot_revenue_cost = 0.0
+            tot_disc_cost = 0.0
+            for line in rec.project_budget_id:
+                tot_revenue_cost += line.price_subtotal
+                tot_disc_cost += line.cost
+            rec.prj_revenue = tot_revenue_cost
+            rec.prj_disbursement = tot_disc_cost
         
-    @api.depends('prj_revenue', 'prj_disbursement', 'prj_labour')
     def _compute_pm_grosss_margin_prjct(self):
         self.prj_gross_profit = 0.0
-        if self.prj_revenue:
-            self.prj_gross_profit = ((self.prj_revenue - self.prj_disbursement - self.prj_labour) / self.prj_revenue ) * 100
+        if self.prj_revenue and self.prj_disbursement:
+            self.prj_gross_profit = (self.prj_revenue/self.prj_disbursement) * 100
+        else:
+            self.prj_gross_profit = 0.0
             
             
-            
-    @api.depends('ap_invoice_ids','prj_revenue')
     def _compute_revenue_progress(self):
-        self.prj_revenue_progress = 0.0
-        total_invoice = sum(self.ap_invoice_ids.filtered(lambda x: x.state in ['posted']).mapped('amount_untaxed_signed'))
-        if self.prj_revenue:
-            self.prj_revenue_progress = total_invoice / self.prj_revenue
-            
+        if self.prj_revenue and self.actual_revenue_cost:
+            self.prj_revenue_progress = (self.actual_revenue_cost/self.prj_revenue) * 100
+        else:
+            self.prj_revenue_progress = 0.0
             
                 
-    @api.depends('prj_labour','prj_disbursement','actual_labour_cost','actual_disbursement_cost')
     def _compute_prj_cost(self):
-        self.prj_cost = 0.0
-        for rec in self:
-            if rec.prj_labour or rec.prj_disbursement:
-                rec.prj_cost = ((rec.actual_labour_cost + rec.actual_disbursement_cost)/(rec.prj_labour + rec.prj_disbursement)) * 100
-
+        if self.prj_disbursement and self.actual_disbursement_cost:
+            self.prj_cost = (self.actual_disbursement_cost/self.prj_disbursement) * 100
+        else:
+            self.prj_cost = 0.0
+        
                
 
 class ProjectTask(models.Model):
