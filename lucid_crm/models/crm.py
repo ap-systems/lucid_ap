@@ -113,6 +113,28 @@ class CrmLead(models.Model):
                                                     'day_open':rec.day_open,
                                                     'day_close':rec.day_close,
                                                     'referred':rec.referred,
+                                                    'company_name':rec.company_name,
+                                                    'proj_name':rec.proj_name,
+                                                    'prj_budget_1':rec.prj_budget_1,
+                                                    'prj_budget_2':rec.prj_budget_2,
+                                                    'tot_budget':rec.tot_budget,
+                                                    'proposal_submission_date':rec.proposal_submission_date,
+                                                    'summary':rec.summary,
+                                                    'actor_db':rec.actor_db,
+                                                    'website_1_rf':rec.website_1_rf,
+                                                    'website_2_rf':rec.website_2_rf,
+                                                    'further_req':rec.further_req,
+                                                    'proj_outcome':rec.proj_outcome,
+                                                    'eligibility_critarea':rec.eligibility_critarea,
+                                                    'doc_to_submit':rec.doc_to_submit,
+                                                    'selection_critarea':rec.selection_critarea,
+                                                    'resource_req':rec.resource_req,
+                                                    'timing':rec.timing,
+                                                    'seo':rec.seo,
+                                                    'scope_of_work':rec.scope_of_work,
+                                                    'database':rec.database,
+                                                    'web_1_rf_gh':rec.web_1_rf_gh,
+                                                    'web_2_rf_bh':rec.web_2_rf_bh,                                    
                                                     'proposal_list_id':[(0,0,{'crm_a':order.crm_a,
                                                                             'crm_b':order.crm_b,
                                                                             'crm_c':order.crm_c,
@@ -184,14 +206,14 @@ class ProposalList(models.Model):
 #                                                                             'crm_i':order.crm_i,
 #                                                                             'crm_j':order.crm_j})for order in rec.proposal_list_id]})
 #         return res
-
+l1 = []
 class ProjectProject(models.Model):
 
     _inherit = 'project.project'
 
     crm_id = fields.Many2one('crm.lead',string="Crm")
     proposal_list_id = fields.One2many('proposal.list','proposal_project_list_ids')
-    proposal_team = fields.Many2many('hr.employee',string="Project Team")
+    proposal_team = fields.Many2many('hr.employee',store=True,string="Project Team",compute="_compute_proposal_team")
     project_budget_id = fields.One2many('budget.crm','project_budget_ids')
     description = fields.Html()
     partner_name = fields.Char(
@@ -247,12 +269,12 @@ class ProjectProject(models.Model):
     web_1_rf_gh = fields.Char(string="Website 1: RF GH - Research Forum Global Health")
     web_2_rf_bh = fields.Char(string="Website 2: RF BC - Research Forum Berlin Citizens")
     
-    @api.onchange('project_budget_id')
-    def onchange_project_budget_id(self):
+    @api.depends('project_budget_id')
+    def _compute_proposal_team(self):
         for rec in self:
             if rec.project_budget_id.employee_id:
                 rec.proposal_team = [(6,0,rec.project_budget_id.employee_id.ids)]
-    
+
     def _prepare_partner_name_from_partner(self, partner):
         """ Company name: name of partner parent (if set) or name of partner
         (if company) or company_name of partner (if not a company). """
