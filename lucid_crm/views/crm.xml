@@ -9,6 +9,7 @@
 			<field name="arch" type="xml">
 			<field name="stage_id" position="attributes">
 				<attribute name="options">{'fold_field': 'fold'}</attribute>
+				<attribute name="context">{'default_stage_id':stage_id}</attribute>
 			</field>
 			<button name="action_set_won_rainbowman" position="attributes">
 				<attribute name="attrs">{'invisible': ['|','|','|', ('active','=',False), ('probability', '=', 100), ('type', '=', 'lead'),('sequence_stage','in',[7])]}</attribute>

@@ -406,3 +406,16 @@ class BudgetCrm(models.Model):
             else:
                 if line.employee_id:
                     line.cost = line.employee_id.timesheet_cost * line.product_uom_qty
+
+class CrmStage(models.Model):
+
+    _inherit = 'crm.stage'
+
+    @api.model
+    def search_read(self, domain=None, fields=None, offset=0, limit=None, order=None):
+        domain=[]
+        if self._context.get('default_stage_id') and self._context.get('default_stage_id') == 2:
+            domain.append(('id','not in',[6,7,8]))
+
+        return super(CrmStage, self).search_read(domain=domain, fields=fields, offset=offset, limit=limit, order=order)
+        
